@@ -23,8 +23,8 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        Food editFood = getIntent().getExtras((MainActivity.EXTRA_FOOD));
-        Log.d(TAG, "The extra is: " + editFood);
+        //Food editFood = getIntent().getExtras((MainActivity.EXTRA_FOOD));
+        //Log.d(TAG, "The extra is: " + editFood);
         mEditTitle = findViewById(R.id.edit_title);
         mEditTitle.setText("Title Placeholder");
     }

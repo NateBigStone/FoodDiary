@@ -65,7 +65,7 @@ public class FoodRepository {
 
         private FoodDAO foodDAO;
 
-        UpdateFoodAsync(FoodDAO travelDAO) {
+        UpdateFoodAsync(FoodDAO foodDAO) {
             this.foodDAO = foodDAO;
         }
 

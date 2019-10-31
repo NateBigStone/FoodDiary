@@ -11,15 +11,14 @@ import java.util.Date;
 @Entity
 public class Food {
 
-    @PrimaryKey
-    @NonNull
-
     private String title;
 
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 
+    @PrimaryKey
+    @NonNull
     private String dateCreated;
     private String description;
     private String imagePath;
@@ -27,7 +26,9 @@ public class Food {
 
     Food(@NonNull String title, String description, String imagePath, String tags) {
         this.title = title;
-        this.dateCreated = DateFormat.getDateInstance().format(new Date());
+        this.dateCreated = Long.toString(new Date().getTime());
+
+                //DateFormat.getDateInstance().format(new Date());
         this.description = description;
         this.imagePath = imagePath;
         this.tags = tags;

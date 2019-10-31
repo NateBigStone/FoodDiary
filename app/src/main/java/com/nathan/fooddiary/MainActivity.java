@@ -43,15 +43,35 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
         setContentView(R.layout.activity_main);
 
         mFoodDatabase = new FoodViewModel(getApplication());
-        Food example0 = new Food("Mayo Salad", "Mayo and Lettuce", ".","mayo lettuce tasty");
+        Food example0 = new Food("Light Mayo Salad", "Mayo and Lettuce", ".","mayo lettuce tasty");
         mFoodDatabase.insert(example0);
-        Food example1 = new Food("Mayo Burrito", "Mayo and Burrito", ".","mayo lettuce tasty");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Food example1 = new Food("Light Burrito", "Mayo and Burrito", ".","mayo lettuce tasty");
         mFoodDatabase.insert(example1);
-        Food example2 = new Food("Mayo Burger", "Mayo and Bun", ".","mayo lettuce tasty");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Food example2 = new Food("Light Burger", "Mayo and Bun", ".","mayo lettuce tasty");
         mFoodDatabase.insert(example2);
-        Food example3 = new Food("Mayo Taco", "Mayo and TacoShell", ".","mayo lettuce tasty");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Food example3 = new Food("Light Taco", "Mayo and TacoShell", ".","mayo lettuce tasty");
         mFoodDatabase.insert(example3);
-        Food example4 = new Food("Mayo Sandwich", "Mayo and Bread", ".","mayo lettuce tasty");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Food example4 = new Food("Light Sandwich", "Mayo and Bread", ".","mayo lettuce tasty");
         mFoodDatabase.insert(example4);
         Log.d(TAG, "The database is: " + mFoodDatabase);
 
@@ -103,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
         System.out.println(food);
         //TODO: create an intent for the add/edit activity
         Intent editIntent = new Intent(MainActivity.this, EditActivity.class);
-        editIntent.putExtra(EXTRA_FOOD, food);
+        //editIntent.putExtra(EXTRA_FOOD, food);
         Log.d(TAG, "The extra is supposed to be: " + food);
         startActivityForResult(editIntent, EDIT_REQUEST_CODE);
     }
