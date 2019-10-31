@@ -21,6 +21,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements FoodClickListener {
 
     private static String TAG = "MAIN_ACTIVITY";
+    public static final String EXTRA_FOOD = "com.nathan.fooddiary.food";
+
+
+    private static final int EDIT_REQUEST_CODE = 0;
 
     private RecyclerView mFoodRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -98,6 +102,10 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
         Food food = mFoodList.get(position);
         System.out.println(food);
         //TODO: create an intent for the add/edit activity
+        Intent editIntent = new Intent(MainActivity.this, EditActivity.class);
+        editIntent.putExtra(EXTRA_FOOD, food);
+        Log.d(TAG, "The extra is supposed to be: " + food);
+        startActivityForResult(editIntent, EDIT_REQUEST_CODE);
     }
     @Override
     public void onListLongClick(int position) {

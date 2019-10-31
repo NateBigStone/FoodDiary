@@ -3,6 +3,7 @@ package com.nathan.fooddiary;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         TextView titleTextView;
         TextView descriptionTextView;
         TextView dateCreatedTextView;
+        ImageView foodPhotoView;
         FoodClickListener listener;
 
         FoodViewHolder(LinearLayout layout, FoodClickListener listener) {
@@ -39,6 +41,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             titleTextView = layout.findViewById(R.id.food_title);
             dateCreatedTextView = layout.findViewById(R.id.date_created);
             descriptionTextView = layout.findViewById(R.id.description);
+            foodPhotoView = layout.findViewById(R.id.food_photo);
 
             layout.setOnClickListener(this);
             layout.setOnLongClickListener(this);
@@ -74,6 +77,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.titleTextView.setText(food.getTitle());
         holder.dateCreatedTextView.setText("Date Created: " + food.getDateCreated());
         holder.descriptionTextView.setText(food.getDescription());
+        holder.foodPhotoView.setImageDrawable(null);
     }
 
     @Override
