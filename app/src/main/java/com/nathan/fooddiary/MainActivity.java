@@ -121,10 +121,8 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
         System.out.println(position);
         Food food = mFoodList.get(position);
         System.out.println(food);
-        //TODO: create an intent for the add/edit activity
         Intent editIntent = new Intent(MainActivity.this, EditActivity.class);
-        //editIntent.putExtra(EXTRA_FOOD, food);
-        Log.d(TAG, "The extra is supposed to be: " + food);
+        editIntent.putExtra(EXTRA_FOOD, food.getDateCreated());
         startActivityForResult(editIntent, EDIT_REQUEST_CODE);
     }
     @Override

@@ -84,6 +84,11 @@ public class FoodRepository {
     public LiveData<Food> getRecordForTitle(String title) {
         return foodDAO.getRecordForTitle(title);
     }
+
+    public LiveData<Food> getRecordForDate(String date) {
+        return foodDAO.getRecordForDate(date);
+    }
+
     public LiveData<Integer> getRowCount() {
         return foodDAO.getRowCount();
     }

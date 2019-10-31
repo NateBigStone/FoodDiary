@@ -25,6 +25,9 @@ public interface FoodDAO {
     @Query("SELECT * FROM Food WHERE title = :title LIMIT 1")
     LiveData<Food> getRecordForTitle(String title);
 
+    @Query("SELECT * FROM Food WHERE dateCreated = :date LIMIT 1")
+    LiveData<Food> getRecordForDate(String date);
+
     @Query("SELECT * FROM Food ORDER BY dateCreated")
     LiveData<List<Food>> getAllRecords();
 

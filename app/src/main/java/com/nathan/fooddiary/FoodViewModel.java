@@ -31,6 +31,10 @@ public class FoodViewModel extends AndroidViewModel {
         return repository.getRecordForTitle(title);
     }
 
+    public LiveData<Food> getRecordForDate(String date) {
+        return repository.getRecordForDate(date);
+    }
+
     public LiveData<Integer> getRowCount(){
         return rowCount;
     }
