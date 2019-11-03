@@ -10,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private Button mSearchButton;
+    private Button mNewButton;
     private EditText mSearchEditText;
 
     private List<Food> mFoodList;
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
         Log.d(TAG, "Food records are: " + mFoodList);
 
         mFoodRecyclerView = findViewById(R.id.food_list);
-        mSearchButton = findViewById(R.id.search_button);
+        mNewButton = findViewById(R.id.new_button);
         mSearchEditText = findViewById(R.id.search);
 
         mFoodRecyclerView.setHasFixedSize(true);
@@ -105,15 +107,35 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
         mAdapter = new FoodAdapter(mFoodList, mLength,this);
         mFoodRecyclerView.setAdapter(mAdapter);
 
-        mSearchButton.setOnClickListener(new View.OnClickListener(){
+        mNewButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                //TODO: Create New
+                System.out.println("create new");
+                Intent editIntent = new Intent(MainActivity.this, EditActivity.class);
+                startActivityForResult(editIntent, EDIT_REQUEST_CODE);
+            }
+        });
+
+        mSearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
                 String newSearch = mSearchEditText.getText().toString();
                 if (newSearch.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Please enter a title or a tag", Toast.LENGTH_LONG).show();
+                    mAdapter = new FoodAdapter(mFoodList, mLength, MainActivity.this);
+                    mFoodRecyclerView.setAdapter(mAdapter);
                     return;
                 }
-                //TODO: Logic for the search
                 mFoodReducedList = new ArrayList<>();
                 Log.d(TAG, "IN SEARCH");
 
@@ -131,9 +153,9 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
                 int mNewLength = mFoodReducedList.size();
                 mAdapter = new FoodAdapter(mFoodReducedList, mNewLength, MainActivity.this);
                 mFoodRecyclerView.setAdapter(mAdapter);
-                mSearchEditText.getText().clear();
             }
         });
+
     }
 
     @Override

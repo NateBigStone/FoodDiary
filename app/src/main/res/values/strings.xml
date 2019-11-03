@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Food Diary</string>
     <string name="search_hint">Search by Title of Tag</string>
-    <string name="search_button">Search</string>
+    <string name="new_button">New</string>
     <string name="delete_food_message">Delete %1$s?</string>
     <string name="delete_dialog_title">Delete Entry</string>
     <string name="date_created">Created on </string>

@@ -33,9 +33,6 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        final String foodDate = getIntent().getStringExtra(MainActivity.EXTRA_FOOD);
-        //TODO: put get intent in a try/catch
-        Log.d(TAG, "The extra is: " + foodDate);
         mEditImage =findViewById(R.id.edit_photo);
         mEditTitle = findViewById(R.id.edit_title);
         mEditDescription = findViewById(R.id.edit_description);
@@ -45,16 +42,21 @@ public class EditActivity extends AppCompatActivity {
 
         mFoodDatabase = new FoodViewModel(getApplication());
 
-        mFoodDatabase.getRecordForDate(foodDate).observe(this, new Observer<Food>() {
-            @Override
-            public void onChanged(Food food) {
-                diaryEntry = food;
-                //mEditImage.setImageDrawable(null);
-                mEditTitle.setText(food.getTitle());
-                mEditDescription.setText(food.getDescription());
-                mEditTags.setText(food.getTags());
-            }
-        });
+        if (this.getIntent().getExtras() != null) {
+            final String foodDate = getIntent().getStringExtra(MainActivity.EXTRA_FOOD);
+            //TODO: put get intent in a try/catch
+            Log.d(TAG, "The extra is: " + foodDate);
+            mFoodDatabase.getRecordForDate(foodDate).observe(this, new Observer<Food>() {
+                @Override
+                public void onChanged(Food food) {
+                    diaryEntry = food;
+                    //mEditImage.setImageDrawable(null);
+                    mEditTitle.setText(food.getTitle());
+                    mEditDescription.setText(food.getDescription());
+                    mEditTags.setText(food.getTags());
+                }
+            });
+        }
 
         mEditImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,12 +76,21 @@ public class EditActivity extends AppCompatActivity {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                diaryEntry.setTitle(mEditTitle.getText().toString());
-                diaryEntry.setDescription(mEditDescription.getText().toString());
-                diaryEntry.setTags(mEditTags.getText().toString());
-                mFoodDatabase.update(diaryEntry);
-                Toast.makeText(EditActivity.this, "Entry Saved", Toast.LENGTH_LONG).show();
-            }
-        });
+                String newTitle = mEditTitle.getText().toString();
+                String newDescription = mEditDescription.getText().toString();
+                String newTags = mEditTags.getText().toString();
+
+                if (diaryEntry != null) {
+                    diaryEntry.setTitle(newTitle);
+                    diaryEntry.setDescription(newDescription);
+                    diaryEntry.setTags(newTags);
+                    mFoodDatabase.update(diaryEntry);
+                    Toast.makeText(EditActivity.this, "Entry Saved", Toast.LENGTH_LONG).show();
+                } else {
+                    Food newEntry = new Food(newTitle, newDescription, ".", newTags);
+                    mFoodDatabase.insert(newEntry);
+                    Toast.makeText(EditActivity.this, "New Entry Saved", Toast.LENGTH_LONG).show();
+                }
+            }});
     }
 }
