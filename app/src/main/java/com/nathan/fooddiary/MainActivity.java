@@ -16,7 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MainActivity extends AppCompatActivity implements FoodClickListener {
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
     private EditText mSearchEditText;
 
     private List<Food> mFoodList;
+    private List<Food> mFoodReducedList;
     private FoodViewModel mFoodDatabase;
     private int mLength;
 
@@ -111,6 +114,23 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
                     return;
                 }
                 //TODO: Logic for the search
+                mFoodReducedList = new ArrayList<>();
+                Log.d(TAG, "IN SEARCH");
+
+                String search =  mSearchEditText.getText().toString().toLowerCase();
+                for( int i = 0; i < mLength; i++){
+                    Log.d(TAG, "LOOPING " + mFoodList.get(i).getTitle() + " SEARCH: " + search);
+                    if (mFoodList.get(i).getTitle().toLowerCase().matches("(.*)" + search + "(.*)")
+                            || mFoodList.get(i).getTags().toLowerCase().matches("(.*)" + search + "(.*)")){
+                        Log.d(TAG, "THERE'S A MATCH: " + mFoodList.get(i).getTitle());
+                        mFoodReducedList.add(mFoodList.get(i));
+                    }
+                }
+                Log.d(TAG, "old LIst: " + mFoodList);
+                Log.d(TAG, "New LIst: " + mFoodReducedList);
+                int mNewLength = mFoodReducedList.size();
+                mAdapter = new FoodAdapter(mFoodReducedList, mNewLength, MainActivity.this);
+                mFoodRecyclerView.setAdapter(mAdapter);
                 mSearchEditText.getText().clear();
             }
         });

@@ -24,21 +24,19 @@ public class Food {
     private String imagePath;
     private String tags;
 
-    Food(@NonNull String title, String description, String imagePath, String tags) {
+    Food(String title, String description, String imagePath, String tags) {
         this.title = title;
         this.dateCreated = Long.toString(new Date().getTime());
-
-                //DateFormat.getDateInstance().format(new Date());
         this.description = description;
         this.imagePath = imagePath;
         this.tags = tags;
     }
 
-    @NonNull
     public String getTitle() {
         return title;
     }
 
+    @NonNull
     public String getDateCreated() {
         return dateCreated;
     }
@@ -53,5 +51,21 @@ public class Food {
 
     public String getTags(){
         return tags;
+    }
+
+    public void setTitle(String title){
+        this.title = title;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
+
+    public void setImagePath(String imagePath){
+        this.imagePath = imagePath;
+    }
+
+    public void setTags(String tags){
+        this.tags = tags;
     }
 }

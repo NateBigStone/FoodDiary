@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Date;
 import java.util.List;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
@@ -75,7 +76,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
         Food food = data.get(position);
         holder.titleTextView.setText(food.getTitle());
-        holder.dateCreatedTextView.setText("Date Created: " + food.getDateCreated());
+        holder.dateCreatedTextView.setText("Date Created: " + new Date(Long.parseLong(food.getDateCreated())));
         holder.descriptionTextView.setText(food.getDescription());
         holder.foodPhotoView.setImageDrawable(null);
     }

@@ -5,9 +5,11 @@ import androidx.lifecycle.Observer;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class EditActivity extends AppCompatActivity {
     ImageButton mSaveButton;
     String TAG = "EDITACTIVITY";
 
+    //TODO: Stretch goal - have tags be an array. The tags could be a recyclerview of buttons
+
     private FoodViewModel mFoodDatabase;
 
     @Override
@@ -29,7 +33,8 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        String foodDate = getIntent().getStringExtra(MainActivity.EXTRA_FOOD);
+        final String foodDate = getIntent().getStringExtra(MainActivity.EXTRA_FOOD);
+        //TODO: put get intent in a try/catch
         Log.d(TAG, "The extra is: " + foodDate);
         mEditImage =findViewById(R.id.edit_photo);
         mEditTitle = findViewById(R.id.edit_title);
@@ -47,7 +52,33 @@ public class EditActivity extends AppCompatActivity {
                 //mEditImage.setImageDrawable(null);
                 mEditTitle.setText(food.getTitle());
                 mEditDescription.setText(food.getDescription());
-                mEditTags.setText(food.getDescription());
+                mEditTags.setText(food.getTags());
+            }
+        });
+
+        mEditImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Do the photo things
+            }
+        });
+
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Check to see if there have been any changes and toast
+                finish();
+            }
+        });
+
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                diaryEntry.setTitle(mEditTitle.getText().toString());
+                diaryEntry.setDescription(mEditDescription.getText().toString());
+                diaryEntry.setTags(mEditTags.getText().toString());
+                mFoodDatabase.update(diaryEntry);
+                Toast.makeText(EditActivity.this, "Entry Saved", Toast.LENGTH_LONG).show();
             }
         });
     }
