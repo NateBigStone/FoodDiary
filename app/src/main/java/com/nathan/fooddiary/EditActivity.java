@@ -7,6 +7,8 @@ import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -81,7 +83,6 @@ public class EditActivity extends AppCompatActivity {
         mEditImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Do the photo things
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 Log.d(TAG, "Photo intent");
                 if(takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -105,6 +106,28 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO: Check to see if there have been any changes and toast
+                if (diaryEntry != null) {
+                    if (!mImagePath.equals(diaryEntry.getImagePath()) ||
+                            !mEditTitle.getText().toString().equals(diaryEntry.getTitle()) ||
+                            !mEditDescription.getText().toString().equals(diaryEntry.getDescription()) ||
+                            !mEditTags.getText().toString().equals(diaryEntry.getTags())
+                    ) {
+                        AlertDialog confirmDeleteDialog = new AlertDialog.Builder(EditActivity.this)
+                                .setMessage(getString(R.string.go_back_message))
+                                .setTitle(getString(R.string.go_back_dialog_title))
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        //go back
+                                        finish();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .create();
+                        confirmDeleteDialog.show();
+                        return;
+                    }
+                }
                 finish();
             }
         });
@@ -179,7 +202,6 @@ public class EditActivity extends AppCompatActivity {
         }
         else{
             mEditImage.setImageResource(R.drawable.icons8_camera_80);
-
         }
     }
 

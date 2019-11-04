@@ -5,4 +5,6 @@
     <string name="delete_food_message">Delete %1$s?</string>
     <string name="delete_dialog_title">Delete Entry</string>
     <string name="date_created">Created on </string>
+    <string name="go_back_dialog_title">Go Back</string>
+    <string name="go_back_message">Return without saving?</string>
 </resources>
