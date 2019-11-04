@@ -24,6 +24,8 @@ import java.util.Optional;
 
 public class MainActivity extends AppCompatActivity implements FoodClickListener {
 
+    //icons from icons8.com
+
     private static String TAG = "MAIN_ACTIVITY";
     public static final String EXTRA_FOOD = "com.nathan.fooddiary.food";
 
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
     private List<Food> mFoodReducedList;
     private FoodViewModel mFoodDatabase;
     private int mLength;
+    private int mNewLength;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,35 +51,35 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
         setContentView(R.layout.activity_main);
 
         mFoodDatabase = new FoodViewModel(getApplication());
-        Food example0 = new Food("Light Mayo Salad", "Mayo and Lettuce", ".","mayo lettuce tasty");
+        Food example0 = new Food("Tuna Mayo Salad", "Mayo and Lettuce", "","mayo lettuce tasty");
         mFoodDatabase.insert(example0);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Food example1 = new Food("Light Burrito", "Mayo and Burrito", ".","mayo lettuce tasty");
+        Food example1 = new Food("Turkey Burrito", "Mayo and Burrito", "","mayo lettuce tasty");
         mFoodDatabase.insert(example1);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Food example2 = new Food("Light Burger", "Mayo and Bun", ".","mayo lettuce tasty");
+        Food example2 = new Food("Light Salmon Burger", "Mayo and Bun", "","mayo lettuce tasty");
         mFoodDatabase.insert(example2);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Food example3 = new Food("Light Taco", "Mayo and TacoShell", ".","mayo lettuce tasty");
+        Food example3 = new Food("Zesty Taco", "Mayo and TacoShell", "","mayo lettuce tasty");
         mFoodDatabase.insert(example3);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Food example4 = new Food("Light Sandwich", "Mayo and Bread", ".","mayo lettuce tasty");
+        Food example4 = new Food("Best Sandwich", "Mayo and Bread", "","mayo lettuce tasty");
         mFoodDatabase.insert(example4);
         Log.d(TAG, "The database is: " + mFoodDatabase);
 
@@ -86,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
             public void onChanged(List<Food> food) {
                 mFoodList = food;
                 mLength = food.size();
+                mNewLength = food.size();
                 Log.d(TAG, "Food records are: " + food);
                 mAdapter = new FoodAdapter(mFoodList, mLength, MainActivity.this);
                 mFoodRecyclerView.setAdapter(mAdapter);
@@ -134,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
                 if (newSearch.isEmpty()) {
                     mAdapter = new FoodAdapter(mFoodList, mLength, MainActivity.this);
                     mFoodRecyclerView.setAdapter(mAdapter);
+                    mNewLength = mLength;
                     return;
                 }
                 mFoodReducedList = new ArrayList<>();
@@ -150,9 +155,10 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
                 }
                 Log.d(TAG, "old LIst: " + mFoodList);
                 Log.d(TAG, "New LIst: " + mFoodReducedList);
-                int mNewLength = mFoodReducedList.size();
+                mNewLength = mFoodReducedList.size();
                 mAdapter = new FoodAdapter(mFoodReducedList, mNewLength, MainActivity.this);
                 mFoodRecyclerView.setAdapter(mAdapter);
+                //TODO: have the keyboard disappear
             }
         });
 
@@ -161,7 +167,13 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
     @Override
     public void onListClick(int position) {
         System.out.println(position);
-        Food food = mFoodList.get(position);
+        Food food;
+        if(mLength != mNewLength){
+            food = mFoodReducedList.get(position);
+        }
+        else {
+            food = mFoodList.get(position);
+        }
         System.out.println(food);
         Intent editIntent = new Intent(MainActivity.this, EditActivity.class);
         editIntent.putExtra(EXTRA_FOOD, food.getDateCreated());
@@ -169,21 +181,28 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
     }
     @Override
     public void onListLongClick(int position) {
-        final int itemPosition = position;
+        final Food deleteFood;
+        if(mLength != mNewLength){
+            deleteFood = mFoodReducedList.get(position);
+        }
+        else {
+            deleteFood = mFoodList.get(position);
+        }
         AlertDialog confirmDeleteDialog = new AlertDialog.Builder(this)
-                .setMessage(getString(R.string.delete_food_message, mFoodList.get(position).getTitle() ))
+                .setMessage(getString(R.string.delete_food_message, deleteFood.getTitle() ))
                 .setTitle(getString(R.string.delete_dialog_title))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //remove from database
-                        mFoodDatabase.delete(mFoodList.get(itemPosition));
+                        mFoodDatabase.delete(deleteFood);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
 
         confirmDeleteDialog.show();
+        mSearchEditText.setText("");
     }
 }
 

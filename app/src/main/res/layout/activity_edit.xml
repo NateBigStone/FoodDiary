@@ -6,16 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".EditActivity">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/edit_photo"
         android:layout_width="300dp"
         android:layout_height="300dp"
+        android:src="@drawable/icons8_camera_80"
         app:layout_constraintBottom_toTopOf="@+id/edit_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edit_title"
@@ -56,23 +56,29 @@
 
     <ImageButton
         android:id="@+id/save_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitXY"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:srcCompat="@drawable/icons8_save_80"
+        android:background="@android:color/transparent"
+        />
 
     <ImageButton
         android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitXY"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/ic_media_previous" />
+        app:srcCompat="@drawable/icons8_back_80"
+        android:background="@android:color/transparent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

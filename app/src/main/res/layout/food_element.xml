@@ -24,7 +24,8 @@
                 android:id="@+id/food_photo"
                 android:scaleType="centerInside"
                 android:cropToPadding="true"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/transparent"
+                />
 
         </LinearLayout>
 

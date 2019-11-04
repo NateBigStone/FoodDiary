@@ -1,9 +1,18 @@
 package com.nathan.fooddiary;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -11,12 +20,19 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class EditActivity extends AppCompatActivity {
 
     Food diaryEntry;
-    ImageView mEditImage;
+    ImageButton mEditImage;
+    String mImagePath;
     EditText mEditTitle;
     EditText mEditDescription;
     EditText mEditTags;
@@ -27,6 +43,9 @@ public class EditActivity extends AppCompatActivity {
     //TODO: Stretch goal - have tags be an array. The tags could be a recyclerview of buttons
 
     private FoodViewModel mFoodDatabase;
+
+    private final static String BUNDLE_KEY_MOST_RECENT_FILE_PATH = "bundle key most recent file path";
+    private static final int PHOTO_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +69,11 @@ public class EditActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(Food food) {
                     diaryEntry = food;
-                    //mEditImage.setImageDrawable(null);
+                    mImagePath = food.getImagePath();
                     mEditTitle.setText(food.getTitle());
                     mEditDescription.setText(food.getDescription());
                     mEditTags.setText(food.getTags());
+                    loadImage();
                 }
             });
         }
@@ -62,6 +82,22 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO: Do the photo things
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Log.d(TAG, "Photo intent");
+                if(takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    try {
+                        File imageFile = createImageFile();
+                        if (imageFile != null) {
+                            Uri imageURI = FileProvider.getUriForFile(EditActivity.this, "com.nathan.fooddiary.fileprovider", imageFile);
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI);
+                            startActivityForResult(takePictureIntent, PHOTO_REQUEST_CODE);
+                        } else {
+                            Log.e(TAG, "Image file is null");
+                        }
+                    } catch (IOException e) {
+                        Log.e(TAG, "Error creating image file " + e);
+                    }
+                }
             }
         });
 
@@ -76,21 +112,108 @@ public class EditActivity extends AppCompatActivity {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String newImagePath = mImagePath;
                 String newTitle = mEditTitle.getText().toString();
                 String newDescription = mEditDescription.getText().toString();
                 String newTags = mEditTags.getText().toString();
 
                 if (diaryEntry != null) {
+                    diaryEntry.setImagePath(newImagePath);
                     diaryEntry.setTitle(newTitle);
                     diaryEntry.setDescription(newDescription);
                     diaryEntry.setTags(newTags);
                     mFoodDatabase.update(diaryEntry);
                     Toast.makeText(EditActivity.this, "Entry Saved", Toast.LENGTH_LONG).show();
                 } else {
-                    Food newEntry = new Food(newTitle, newDescription, ".", newTags);
+                    Food newEntry = new Food(newTitle, newDescription, newImagePath, newTags);
                     mFoodDatabase.insert(newEntry);
                     Toast.makeText(EditActivity.this, "New Entry Saved", Toast.LENGTH_LONG).show();
                 }
             }});
+    }
+
+    @Override
+    protected  void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Log.d(TAG, "onActivityResult for request code " + requestCode + " and current path " + mImagePath);
+            loadImage();
+            requestSaveImageToMediaStore();
+        } else if (resultCode == RESULT_CANCELED) {
+            mImagePath = "";
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        //create unigue file nam w time stomp
+        String imageFilename = "Diary_" + new Date().getTime();
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File imageFile = File.createTempFile(
+                imageFilename,
+                ".jpg",
+                storageDir
+        );
+        mImagePath = imageFile.getAbsolutePath();
+        return imageFile;
+    }
+
+    private void loadImage() {
+        Log.d(TAG, "THE IMAGE PATH IS " + mImagePath);
+        if (mImagePath != null && mImagePath.length() > 5) {
+            Picasso.get()
+                    .load(new File(mImagePath))
+                    .error(android.R.drawable.stat_notify_error) // built-in error icon
+                    .fit()
+                    .centerCrop()
+                    .into(mEditImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d(TAG, "Image loaded");
+                        }
+                        @Override
+                        public void onError(Exception e) {
+                            Log.e(TAG, "error loading image", e);
+                        }
+                    });
+
+        }
+        else{
+            mEditImage.setImageResource(R.drawable.icons8_camera_80);
+
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outBundle) {
+        //retains imagepath
+        super.onSaveInstanceState(outBundle);
+        outBundle.putString(BUNDLE_KEY_MOST_RECENT_FILE_PATH, mImagePath);
+    }
+
+    private void requestSaveImageToMediaStore() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED) {
+            saveImage();
+        }
+        else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grandResults) {
+        if(grandResults.length > 0 && grandResults[0] == PackageManager.PERMISSION_GRANTED) {
+            saveImage();
+        }
+        else {
+            Toast.makeText(this, "Images will NOT be saved to media store", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void saveImage() {
+        try {
+            MediaStore.Images.Media.insertImage(getContentResolver(), mImagePath, "FoodDiary", "FoodDiary");
+        } catch (IOException e) {
+            Log.e(TAG, "Image file not found", e);
+        }
     }
 }
