@@ -48,8 +48,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:maxLength="10"
+                android:maxLines="4"
                 android:ellipsize="end" />
+            <!--android:maxLength="100"-->
 
             <TextView
                 android:id="@+id/date_created"
