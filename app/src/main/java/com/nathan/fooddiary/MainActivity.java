@@ -51,35 +51,61 @@ public class MainActivity extends AppCompatActivity implements FoodClickListener
         setContentView(R.layout.activity_main);
 
         mFoodDatabase = new FoodViewModel(getApplication());
-        Food example0 = new Food("Tuna Mayo Salad", "Mayo and Lettuce", "","mayo lettuce tasty");
+        Food example0 = new Food("Kale and black bean quesadilla",
+                "The Black Bean Quesarito is a flour tortilla filled with black beans, " +
+                        "seasoned rice, cheddar cheese, nacho cheese sauce, reduced-fat sour cream " +
+                        "and a creamy chipotle sauce. The dishes can be customized to be vegan by " +
+                        "ditching the nacho cheese sauce, sour cream, cheddar cheese and creamy " +
+                        "chipotle sauce.", "","bean quesadilla cheese nacho creamy");
         mFoodDatabase.insert(example0);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Food example1 = new Food("Turkey Burrito", "Mayo and Burrito", "","mayo lettuce tasty");
+        Food example1 = new Food("Turkey Burrito", "A big ol’ soft flour tortilla " +
+                "with some spiced ground turkey and a few veggies –> who knew this combo could be so " +
+                "humble meets revolutionary? Not me, until I started making these a few months ago. " +
+                "That’s right – it’s been months and I haven’t shared it here because, um, I don’t " +
+                "know. It just seemed too Basic Girl of me. That being said, you and I know the truth: " +
+                "that sometimes a grab-and-go lunch from the freezer, even if it is almost as simple " +
+                "as spicy ground turkey and veggies rolled up in a flour tortilla, is a Meal Prep Win. " +
+                "Plus, I shared them on Snapchat a few weeks ago and have gotten several emails and " +
+                "snaps since asking me to share the recipe on the blog. I mean, I’m blushing. Thanks " +
+                "for making me feel like I’m a special turkey burrito maker, guys",
+                "","creamy burrito sour cream");
         mFoodDatabase.insert(example1);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Food example2 = new Food("Light Salmon Burger", "Mayo and Bun", "","mayo lettuce tasty");
+        Food example2 = new Food("Light Salmon Burger", "These burgers can be formed " +
+                "earlier in the day, or even the night before. Refrigerating them before cooking helps " +
+                "them hold together firm during cooking. Another tip is to put some of the salmon in " +
+                "the food processor or chopper. It creates \"glue\" that keeps everything together.",
+                "","fish tomato light");
         mFoodDatabase.insert(example2);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Food example3 = new Food("Zesty Taco", "Mayo and TacoShell", "","mayo lettuce tasty");
+        Food example3 = new Food("Zesty Taco", "Line the taco shells with lettuce " +
+                "and fill with beef mixture. Top with salsa, cheese, and sour cream, if desired.",
+                "","taco cheese lettuce messy");
         mFoodDatabase.insert(example3);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Food example4 = new Food("Best Sandwich", "Mayo and Bread", "","mayo lettuce tasty");
+        Food example4 = new Food("Three bean chili with hominy and kale", "If you " +
+                "happen to be making this at a non-Thanksgiving time of year (i.e. you don’t have " +
+                "gobs of roast turkey sitting around) you can substitute ground turkey. Just add in " +
+                "about 1 pound of raw ground turkey to the recipe after the onion, garlic, and spices. " +
+                "Saute until it turns white (about 3-4 minutes) then proceed with the recipe as written.",
+                "","gobs saute garlic recipe");
         mFoodDatabase.insert(example4);
         Log.d(TAG, "The database is: " + mFoodDatabase);
 

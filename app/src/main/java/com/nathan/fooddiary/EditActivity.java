@@ -57,6 +57,8 @@ public class EditActivity extends AppCompatActivity {
         mEditImage =findViewById(R.id.edit_photo);
         mEditTitle = findViewById(R.id.edit_title);
         mEditDescription = findViewById(R.id.edit_description);
+        //TODO: Make description a textview with 100 characters and onclick replace with a fragment
+        //of a a textedit
         mEditTags = findViewById(R.id.edit_tags);
         mBackButton = findViewById(R.id.back_button);
         mSaveButton = findViewById(R.id.save_button);
