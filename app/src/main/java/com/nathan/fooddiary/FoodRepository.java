@@ -17,14 +17,14 @@ public class FoodRepository {
     }
 
     public void insert(Food record) {
-        new InsertPlaceAsync(foodDAO).execute(record);
+        new InsertFoodAsync(foodDAO).execute(record);
     }
 
-    static class InsertPlaceAsync extends AsyncTask<Food, Void, Void> {
+    static class InsertFoodAsync extends AsyncTask<Food, Void, Void> {
 
         private FoodDAO foodDAO;
 
-        InsertPlaceAsync(FoodDAO foodDAO) {
+        InsertFoodAsync(FoodDAO foodDAO) {
             this.foodDAO = foodDAO;
         }
 
